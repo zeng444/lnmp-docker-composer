@@ -75,6 +75,7 @@ RUN printf "yes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && \
     rm -r \
         ${PWD}/redis-${REDIS_VERSION}.tgz \
         ${PWD}/cphalcon-${PHALCON_VERSION}.tar.gz
+
 # recompile libcurl with openssl2
 RUN apk add --update --no-cache openssl openssl-dev nghttp2-dev ca-certificates  && \
     apk add --update --no-cache --virtual curldeps g++ make perl && \
