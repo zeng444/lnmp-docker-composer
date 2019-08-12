@@ -1,0 +1,111 @@
+version: '3.2'
+
+services:
+
+  web:
+    container_name: http
+    image: janfish/phalcon-nginx:1.17
+    build:
+      context: ../nginx
+      args:
+      - SITE_ENV=DEV
+    ports:
+    - 80:80
+    environment:
+    - TZ=Asia/Shanghai
+    volumes:
+    - /data:/data
+    - /var/lib/nginx:/etc/nginx/conf.d
+
+  php72:
+    container_name: php72-fpm
+    image: janfish/php-fpm:phalcon
+    build:
+      context: ../php72-fpm
+    expose:
+    - 9000
+    #ports:
+    #- 9000:9000
+    volumes:
+    - /data:/data
+    environment:
+    - SITE_ENV=DEV
+    - TZ=Asia/Shanghai
+
+  #  php72cli:
+  #    container_name: php72-cli
+  #    image: janfish/php72-cli:phalcon
+  #    build:
+  #      context: ../php72-cli:phalcon
+  #    volumes:
+  #    - /data:/data
+  #    environment:
+  #    - SITE_ENV=DEV
+  #    - TZ=Asia/Shanghai
+  #    command: [ "php", "/data/docker/hi.php" ]
+
+  redis:
+    container_name: redis
+    image: janfish/redis:5.0.2
+    build:
+      context: ../redis
+    expose:
+    - 6379
+    #    ports:
+    #    - 6379:6379
+    volumes:
+    - /var/lib/redis:/data
+    environment:
+    - TZ=Asia/Shanghai
+    sysctls:
+    - net.core.somaxconn=1024
+
+  mysql:
+    container_name: mysql
+    image: janfish/mysql:5.7
+    build:
+      context: ../mysql
+    volumes:
+    - /var/lib/mysql:/var/lib/mysql
+    environment:
+    - MYSQL_ROOT_PASSWORD=root
+    - TZ=Asia/Shanghai
+    ports:
+    - 3306:3306
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 20000
+        hard: 40000
+
+  beanstalkd:
+    container_name: beanstalkd
+    image: schickling/beanstalkd:latest
+    ports:
+    - 11300:11300
+    expose:
+    - 11300
+    entrypoint: ["/usr/bin/beanstalkd","-b","/home"]
+    #    logging:
+    #      driver: "json-file"
+    #      options:
+    #        max-size: "2m"
+
+  mongod:
+    container_name: mongod
+    image: janfish/mongod:4.0
+    build:
+      context: ../mongod
+    ports:
+    - 27017:27017
+    volumes:
+    - /data/mongod:/var/lib/mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    command: ["--config","/etc/mongod.conf"]
+
+networks:
+  default:
+    external:
+      name: janfish

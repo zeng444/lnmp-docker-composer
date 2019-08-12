@@ -1,0 +1,18 @@
+[mysqld]
+
+max_connections = 5000
+skip-external-locking
+skip-host-cache
+skip-name-resolve
+innodb_buffer_pool_size = 6G
+innodb_log_file_size = 512M
+innodb_file_per_table = on
+innodb_log_buffer_size = 2M
+query_cache_size = 0
+query_cache_type = 0
+
+server_id=1
+log-bin=mysql-bin
+binlog_format=mixed
+
+sql_mode=NO_ENGINE_SUBSTITUTION
