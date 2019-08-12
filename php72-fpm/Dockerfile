@@ -27,11 +27,17 @@ RUN echo -e "https://mirrors.aliyun.com/alpine/v3.8/main/\nhttps://mirrors.aliyu
     && set -xe
 
 # compile hiredis
-RUN curl -LO https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz  && \
-    tar zxvf v${HIREDIS_VERSION}.tar.gz && \
-    cd v${HIREDIS_VERSION} && \
-    make && make install && ldconfig && \
-    cd ../ && rm -r v${HIREDIS_VERSION}
+RUN wget https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz -O hiredis.tar.gz \
+    && mkdir -p hiredis \
+    && tar -xf hiredis.tar.gz -C hiredis --strip-components=1 \
+    && rm hiredis.tar.gz \
+    && ( \
+        cd hiredis \
+        && make -j$(nproc) \
+        && make install \
+        && ldconfig /etc/ld.so.conf.d \
+    ) \
+    && rm -r hiredis
 
 # install extension
 RUN printf "yes\nno\nyes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && \
