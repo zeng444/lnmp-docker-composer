@@ -15,10 +15,7 @@ ARG CURL_VERSION=7.50.1
 ARG SWOOLE_VERSION=4.4.3
 
 WORKDIR /root
-#fix iconv bugs
-RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
-#RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ gnu-libiconv
-ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 RUN echo -e "https://mirrors.aliyun.com/alpine/v3.8/main/\nhttps://mirrors.aliyun.com/alpine/v3.8/community/" >  /etc/apk/repositories \
     && apk add g++ make autoconf imagemagick-dev imagemagick libmcrypt-dev gd-dev libpng-dev libjpeg-turbo-dev freetype-dev gettext-dev libzip-dev \
     # fix timezone
@@ -31,9 +28,9 @@ RUN echo -e "https://mirrors.aliyun.com/alpine/v3.8/main/\nhttps://mirrors.aliyu
 # compile hiredis
 RUN curl -LO https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz  && \
     tar zxvf v${HIREDIS_VERSION}.tar.gz && \
-    cd hiredis-${HIREDIS_VERSION} && \
+    cd v${HIREDIS_VERSION} && \
     make && make install && ldconfig && \
-    cd ../ && rm -r hiredis-${HIREDIS_VERSION}
+    cd ../ && rm -r v${HIREDIS_VERSION}
 
 # install extension
 RUN printf "yes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && \
@@ -90,4 +87,10 @@ RUN apk add --update --no-cache openssl openssl-dev nghttp2-dev ca-certificates 
         --with-pic  && \
      make && make install && \
      cd ../ && rm -r curl-${CURL_VERSION}
+
+#fix iconv bugs
+RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
+#RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ gnu-libiconv
+ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
+
 #CMD [ "php", "./your-script.php" ]
