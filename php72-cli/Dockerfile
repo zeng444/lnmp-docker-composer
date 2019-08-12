@@ -73,8 +73,8 @@ RUN printf "yes\nno\nyes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && 
           sed -i 's/;date.timezone =/date.timezone = PRC/' /usr/local/etc/php/php.ini && \
     # Remove all temp files
     rm -r \
-        ${PWD}/redis-${REDIS_VERSION}.tgz \
-        ${PWD}/cphalcon-${PHALCON_VERSION}.tar.gz
+        ${PWD}/cphalcon-${PHALCON_VERSION}.tar.gz \
+        ${PWD}/cphalcon-${PHALCON_VERSION}
 
 # recompile libcurl with openssl2
 RUN apk add --update --no-cache openssl openssl-dev nghttp2-dev ca-certificates  && \
