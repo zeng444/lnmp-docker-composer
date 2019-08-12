@@ -40,7 +40,7 @@ RUN wget https://github.com/redis/hiredis/archive/v${HIREDIS_VERSION}.tar.gz -O 
     && rm -r hiredis
 
 # install extension
-RUN printf "yes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && \
+RUN printf "yes\nno\nyes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && \
     echo "extension=swoole.so"  >/usr/local/etc/php/conf.d/docker-php-ext-swoole.ini  && \
     # Pecl install Redis
     pecl install redis-${REDIS_VERSION}.tgz && \
