@@ -23,8 +23,7 @@
 
 ## 下载安装配置包
 
-链接：https://pan.baidu.com/s/1QTRoPXPLk9KirI-F_9FNIA 
-提取码：yb8y 
+https://github.com/zeng444/lnmp-docker-composer
 
 ## 开始安装
 
