@@ -1,1 +1,1 @@
-docker build -t phalcon-cli:72 .
+docker build -t janfish/cli:phalcon .
