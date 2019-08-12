@@ -100,7 +100,8 @@ RUN apk add --update --no-cache openssl openssl-dev nghttp2-dev ca-certificates 
      make && make install && \
      cd ../ && rm -r curl-${CURL_VERSION}
 
-#fix iconv bugs
-RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
-#RUN apk add --no-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ gnu-libiconv
+#fix iconv bugs(https://github.com/docker-library/php/issues/240#issuecomment-305038173) 万恶的资本主义的网有好差
+#RUN apk add --no-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing gnu-libiconv
+#RUN apk add --no-cache --repository http://dl-4.alpinelinux.org/alpine/edge/testing gnu-libiconv
+RUN apk add gnu-libiconv --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 ENV LD_PRELOAD /usr/lib/preloadable_libiconv.so php
