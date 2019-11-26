@@ -53,7 +53,9 @@ RUN printf "yes\nno\nyes\nyes\n" | pecl install swoole-${SWOOLE_VERSION}.tgz && 
     echo "extension=mcrypt.so"  >/usr/local/etc/php/conf.d/docker-php-ext-mcrypt.ini  && \
     # Pecl install Seaslog
     pecl install SeasLog-${SEASLOG_VERSION}.tgz && \
-    echo "extension=seaslog.so"  >/usr/local/etc/php/conf.d/docker-php-ext-seaslog.ini  && \
+    echo 'extension=seaslog.so\n\
+    seaslog.trace_error = 0\n\
+    seaslog.throw_exception = 0' > /usr/local/etc/php/conf.d/docker-php-ext-seaslog.ini  && \
     # Pecl install Imagick
     pecl install imagick-${IMAGICK_VERSION}.tgz && \
     echo "extension=imagick.so"  >/usr/local/etc/php/conf.d/docker-php-ext-imagick.ini  && \
