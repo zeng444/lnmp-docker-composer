@@ -1,6 +1,8 @@
 [mysqld]
 
 max_connections = 5000
+max_connect_errors = 2000
+transaction_isolation = READ-COMMITTED
 skip-external-locking
 skip-host-cache
 skip-name-resolve
@@ -10,9 +12,13 @@ innodb_file_per_table = on
 innodb_log_buffer_size = 2M
 query_cache_size = 0
 query_cache_type = 0
+default-time_zone='+8:00'
+character_set_server=utf8mb4
+skip_name_resolve = 1
+lower_case_table_names = 1
 
-server_id=1
-log-bin=mysql-bin
-binlog_format=mixed
+server_id = 1
+binlog_format = row
+log_bin = mysql-bin
 
-sql_mode=NO_ENGINE_SUBSTITUTION
+sql_mode=NO_ENGINE_SUBSTITUTION,STRICT_TRANS_TABLES
