@@ -16,7 +16,11 @@ services:
     volumes:
     - /data:/data
     - /var/lib/nginx:/etc/nginx/conf.d
-
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200m"
+        
   php72:
     container_name: php72-fpm
     image: janfish/php-fpm:phalcon
